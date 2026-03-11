@@ -114,7 +114,7 @@ cd <slug>
 python examples/<slug>_train.py
 ```
 
-结果保存至 `<slug>/results/`。/ Results are saved to `<slug>/results/`.
+结果保存至 `<slug>/results/`。
 
 ---
 
