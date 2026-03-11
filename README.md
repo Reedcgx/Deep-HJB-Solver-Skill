@@ -132,6 +132,9 @@ python examples/<slug>_train.py
 
 ![Step 3: Training script](assets/3.png)
 
+**Step 4 — 顺利运行**
+
+![Step 4: Done](assets/5.png)
 ---
 
 
