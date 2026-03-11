@@ -161,7 +161,8 @@ class <Prefix>Loss:
         V_x = gt.gradient(V, X_interior)   # ∂V/∂x  (use if needed by the HJB)
         del gt  # release persistent tape immediately after use
 
-        residual = V_t  # TODO: replace with actual HJB residual, e.g. V_t + H(x,V_x,...)
+        ctrl = control(t_interior, X_interior)  # u from control network — substitute into HJB
+        residual = V_t  # TODO: replace with actual HJB residual, e.g. V_t + ctrl * V_x + ...
         L1 = tf.reduce_mean(tf.square(residual))
 
         target_terminal = self.problem.get_terminal_condition(X_terminal)
@@ -184,16 +185,18 @@ class <Prefix>Loss:
         # Always use persistent=True here: you need at least V_x, and some problems
         # also need V_xx (second-order), which requires a nested tape inside this one.
         # persistent=True lets you reuse the outer tape multiple times safely.
-        ctrl = control(t_interior, X_interior)
         with tf.GradientTape(persistent=True, watch_accessed_variables=False) as gt:
             gt.watch(X_interior)
             V = model(t_interior, X_interior)
         V_x = gt.gradient(V, X_interior)          # ∂V/∂x
         del gt
-        residual_u = ctrl - (-V_x)                # example FOC: u* = -V_x
-        L2 = tf.reduce_mean(tf.square(residual_u))
+        ctrl = control(t_interior, X_interior)    # u from control network
+        # TODO: compute L2 from the inf{...} terms of the HJB using ctrl and V_x.
+        # See "How to translate an HJB equation into loss functions" below for the rule.
+        # Example (LQ, inf_u { u*V_x + ½u² }): L2 = tf.reduce_mean(ctrl * V_x + 0.5 * tf.square(ctrl))
+        L2 = tf.reduce_mean(ctrl)      # placeholder — replace with real Hamiltonian terms
         # MUST return exactly this 2-tuple — DGMTrainer unpacks it directly
-        return L2, {'V_x': V_x, 'residual_u': residual_u}
+        return L2, {'V_x': V_x, 'ctrl': ctrl}
 ```
 
 ### Step 5 — Register new classes in `<slug>/src/configs/__init__.py`, `<slug>/src/problems/__init__.py`, `<slug>/src/losses/__init__.py`
