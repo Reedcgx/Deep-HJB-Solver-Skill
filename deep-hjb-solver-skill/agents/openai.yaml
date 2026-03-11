@@ -1,4 +1,0 @@
-interface:
-  display_name: Deep HJB Solver
-  short_description: Scaffold and extend HJB solver code using the DGM framework.
-  default_prompt: Add a new 2D HJB problem with 2 controls (Z and W) to this repository. Scaffold the config, problem, loss, and training script, then fill in the PDE residual and register it in the package __init__ files.
