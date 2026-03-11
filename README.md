@@ -50,8 +50,6 @@
 ```
 deep-hjb-solver/
 ├── SKILL.md                          # 触发规则与完整工作流
-├── agents/
-│   └── openai.yaml                   # UI 显示元数据
 ├── references/
 │   ├── repo-conventions.md           # API 签名、命名规范、安全边界
 │   └── training-output-contract.md   # CSV schema、绘图要求
