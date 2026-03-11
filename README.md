@@ -80,6 +80,12 @@ deep-hjb-solver/
 
 把`deep-hjb-solver-skill`文件夹复制到openclaw的`skills`文件夹下。
 
+or
+```bash
+clawhub install deep-hjb-solver-skill
+```
+
+
 ### 2. Ask OpenClaw
 
 打开 OpenClaw，直接描述你的 HJB 问题：
